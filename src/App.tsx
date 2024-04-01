@@ -2,12 +2,14 @@ import { useState } from 'react'
 import './App.css'
 import { Button } from './components/ui/button'
 import { TypographyBlockquote, TypographyH1, TypographyH2, TypographyH3, TypographyP } from './components/ui/typography'
+import { ModeToggle } from './components/ui/mode-toggle'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+      <ModeToggle />
       <TypographyH1>
         The Joke Tax Chronicles
       </TypographyH1>
