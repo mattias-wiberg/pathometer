@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { FaGithubAlt, FaGoogle, FaSpinner } from 'react-icons/fa'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import React from 'react'
 import { Label } from '@radix-ui/react-dropdown-menu'
 import { Input } from '@/components/ui/input'
@@ -8,6 +8,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function Auth() {
     const provider = new GoogleAuthProvider();
+    const navigate = useNavigate();
     const auth = getAuth();
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     async function signInWithGoogle() {
@@ -23,6 +24,7 @@ function Auth() {
                 console.log('credential', credential)
                 // IdP data available using getAdditionalUserInfo(result)
                 // ...
+                navigate('/')
             }).catch((error) => {
                 // Handle Errors here.
                 const errorCode = error.code;
