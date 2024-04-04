@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { FaGithubAlt, FaGoogle, FaSpinner } from 'react-icons/fa'
+import { FaGoogle, FaSpinner } from 'react-icons/fa'
 import { NavLink, useNavigate } from 'react-router-dom'
 import React from 'react'
 import { Label } from '@radix-ui/react-dropdown-menu'
