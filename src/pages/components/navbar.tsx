@@ -19,6 +19,9 @@ const Navbar = () => {
           <MdModeOfTravel size={32} />
           <TypographyH3 className='ml-2'>Work Travel Tracker</TypographyH3>
         </NavLink>
+        <p className={`mt-6 ml-0 text-xs`}>
+          {import.meta.env.VITE_VERSION}
+        </p>
 
         <div className="ml-auto flex items-center space-x-4">
           {
