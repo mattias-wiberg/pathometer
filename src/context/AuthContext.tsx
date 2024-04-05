@@ -9,11 +9,11 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, (user: User | null) => {
-            setCurrentUser(user)
+            setUser(user)
         })
 
         return () => {
@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return (
         <>
-            <AuthContext.Provider value={currentUser}>
+            <AuthContext.Provider value={user}>
                 {children}
             </AuthContext.Provider>
         </>
