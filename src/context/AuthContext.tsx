@@ -1,7 +1,7 @@
 import { auth } from "@/firebase";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
-import piggyTheBuilder from "@/assets/piggy-the-builder.png";
+import piggyTheBuilder from "@/assets/piggy-the-builder.webp";
 
 const AuthContext = createContext<User | null>(null);
 
