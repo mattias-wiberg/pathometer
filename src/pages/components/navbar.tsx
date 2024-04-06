@@ -4,8 +4,8 @@ import { TypographyH3 } from '@/components/ui/typography'
 import { useAuth } from '@/context/AuthContext'
 import { MdModeOfTravel } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
-import { NotebookText } from 'lucide-react'
 import { UserNav } from '@/components/ui/user-nav'
+import { Plus } from 'lucide-react'
 
 const Navbar = () => {
   const user = useAuth()
@@ -15,19 +15,24 @@ const Navbar = () => {
       <div className="flex h-16 items-center px-4">
         <NavLink to='/' className='flex items-center'>
           <MdModeOfTravel size={32} />
-          <TypographyH3 className='ml-2'>Work Travel Tracker</TypographyH3>
-          <p className={`mt-6 text-xs`}>
-            {import.meta.env.VITE_VERSION}
-          </p>
+          <div className='flex flex-col ml-2'>
+            <TypographyH3>Trackie</TypographyH3>
+            <p className="text-xs leading-none mt-[-4px]">
+              {import.meta.env.VITE_VERSION}
+            </p>
+          </div>
+
         </NavLink>
 
         <div className="ml-auto flex items-center space-x-4">
           {
             user && (
               <>
-                <Button variant="outline" size="icon">
-                  <NotebookText className="absolute h-[1.2rem] w-[1.2rem]" />
-                  <span className="sr-only">Add Trip</span>
+                <Button className='flex sm:hidden' size="icon">
+                  <Plus />
+                </Button>
+                <Button className='hidden sm:flex'>
+                  <Plus /> <span className='ml-1'>Add Trip</span>
                 </Button>
                 <UserNav />
               </>
