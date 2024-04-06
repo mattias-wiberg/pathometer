@@ -58,7 +58,7 @@ export function UserNav() {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
-                        Profile
+                        Notebook
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         Settings
