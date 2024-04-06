@@ -4,7 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import { ThemeProvider } from './components/theme-provider.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Home from './pages/home.tsx'
+import Home from './pages/home/home.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
 import Auth from './pages/auth.tsx'
 
