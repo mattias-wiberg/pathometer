@@ -16,7 +16,7 @@ const Navbar = () => {
         <NavLink to='/' className='flex items-center'>
           <MdModeOfTravel size={32} />
           <div className='flex flex-col ml-2'>
-            <TypographyH3>Trackie</TypographyH3>
+            <TypographyH3>Trippy</TypographyH3>
             <p className="text-xs leading-none mt-[-4px]">
               {import.meta.env.VITE_VERSION}
             </p>
