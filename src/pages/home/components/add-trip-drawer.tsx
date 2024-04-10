@@ -20,9 +20,9 @@ function AddTripDrawer() {
             element: <PlacesInput />
         }],
         [2, {
-            title: "Review route",
-            description: "This is the route the distance will be calculated from.",
-            element: <DirectionsMap origin='Gothenburg+Sweden' destination='Stockholm+Sweden' />
+            title: "Pick route",
+            description: "This is the route the distance and time will be calculated from.",
+            element: <DirectionsMap origin='Gothenburg, Sweden' destination='Stockholm, Sweden' />
         }],
     ])
 

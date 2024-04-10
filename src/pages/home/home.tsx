@@ -6,7 +6,6 @@ import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import AddTripDrawer from "./components/add-trip-drawer"
 import TripCard from "./components/trip-card"
-import { APIProvider, Map } from '@vis.gl/react-google-maps';
 
 function Home() {
     const user = useAuth()
@@ -67,7 +66,5 @@ function Home() {
         </div>
     )
 }
-//https://www.google.com/maps/dir/?api=1&origin=Gothenburg+Sweden&destination=Stockholm+Sweden&travelmode=driving
-// https://www.google.com/maps/@?api=1&map_action=map&parameters
 
 export default Home

@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton';
-import { APIProvider, Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
+import { Button } from '@/components/ui/button';
+import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import { useEffect, useState } from 'react'
 
 type DirectionsMapProps = {
@@ -8,35 +8,48 @@ type DirectionsMapProps = {
 }
 
 function DirectionsMap({ origin, destination }: DirectionsMapProps) {
-    const [loading, setLoading] = useState(true);
+    const [routeIndex, setRouteIndex] = useState(0);
+    const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
 
     return (
         <>
-            {
-                loading && <Skeleton className="h-[200px] w-full" />
-            }
-
-            <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-                <Map disableDefaultUI={true} defaultZoom={10} className="w-full h-[200px]">
-                    <Directions />
-                </Map>
-            </APIProvider>
+            <div className='flex flex-col m-2 space-y-2'>
+                {routes.map((route, index) => (
+                    <Button
+                        variant={index === routeIndex ? "outline" : "ghost"}
+                        key={index}
+                        value={index.toString()}
+                        className='w-full items-center justify-between border-sky-600'
+                        onClick={() => setRouteIndex(index)}
+                    >
+                        <span>{route.summary}</span>
+                        <span className='text-xs text-muted-foreground'>
+                            {route.legs[0].distance?.text || '- km'}  ({route.legs[0].duration?.text || '- min'})
+                        </span>
+                    </Button>
+                ))}
+            </div>
+            <Map disableDefaultUI={true} className="w-full h-[200px]">
+                <Directions origin={origin} destination={destination} setRoutes={setRoutes} routeIndex={routeIndex} />
+            </Map>
         </>
     )
 }
 
-function Directions() {
+type DirectionsProps = {
+    origin: string
+    destination: string
+    setRoutes: (routes: google.maps.DirectionsRoute[]) => void
+    routeIndex: number
+}
+
+function Directions({ origin, destination, setRoutes, routeIndex }: DirectionsProps) {
     const map = useMap();
     const routesLibrary = useMapsLibrary('routes');
     const [directionsService, setDirectionsService] =
         useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] =
         useState<google.maps.DirectionsRenderer>();
-    const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
-    const [routeIndex, setRouteIndex] = useState(0);
-    const selected = routes[routeIndex];
-    const leg = selected?.legs[0];
-
     // Initialize directions service and renderer
     useEffect(() => {
         if (!routesLibrary || !map) return;
@@ -50,19 +63,17 @@ function Directions() {
     // Use directions service
     useEffect(() => {
         if (!directionsService || !directionsRenderer) return;
-        directionsService.route({})
 
         directionsService
             .route({
-                origin: 'Gothenburg, Sweden',
-                destination: 'Stockholm, Sweden',
+                origin: origin,
+                destination: destination,
                 travelMode: google.maps.TravelMode.DRIVING,
                 provideRouteAlternatives: true
             })
             .then(response => {
                 directionsRenderer.setDirections(response);
                 setRoutes(response.routes);
-                console.log(response);
             });
 
         return () => directionsRenderer.setMap(null);
@@ -74,30 +85,7 @@ function Directions() {
         directionsRenderer.setRouteIndex(routeIndex);
     }, [routeIndex, directionsRenderer]);
 
-    if (!leg) return null;
-
-    return (
-        <div className="directions">
-            <h2>{selected.summary}</h2>
-            <p>
-                {leg.start_address.split(',')[0]} to {leg.end_address.split(',')[0]}
-            </p>
-            <p>Distance: {leg.distance?.text}</p>
-            <p>Duration: {leg.duration?.text}</p>
-
-            <h2>Other Routes</h2>
-            <ul>
-                {routes.map((route, index) => (
-                    <li key={route.summary}>
-                        <button onClick={() => setRouteIndex(index)}>
-                            {route.summary}
-                        </button>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+    return null;
 }
-
 
 export default DirectionsMap

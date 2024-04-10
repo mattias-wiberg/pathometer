@@ -1,14 +1,12 @@
-import { Skeleton } from '@/components/ui/skeleton';
-import { APIProvider, Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
+import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import { useEffect, useState } from 'react'
-import exampleDirections from '@/assets/exmaple-route.json'
 
 type DirectionsMapProps = {
-    origin: string
-    destination: string
+    directions: google.maps.DirectionsResult
+    routeIndex: number
 }
 
-function RenderRoute() {
+export default function RouteMap({ directions, routeIndex }: DirectionsMapProps) {
     const map = useMap();
     const routesLibrary = useMapsLibrary('routes');
     const [directionsRenderer, setDirectionsRenderer] =
@@ -20,8 +18,8 @@ function RenderRoute() {
         if (!routesLibrary || !map) return;
         setDirectionsRenderer(new routesLibrary.DirectionsRenderer({
             map,
-            directions: exampleDirections as unknown as google.maps.DirectionsResult,
-            routeIndex: 0,
+            directions: directions,
+            routeIndex: routeIndex,
             suppressMarkers: true,
             hideRouteList: true,
             suppressInfoWindows: true,
@@ -31,30 +29,3 @@ function RenderRoute() {
 
     return null;
 }
-
-export default function RouteMap(/* { origin = 'Gothenburg, Sweden', destination = 'Stockholm, Sweden' }: DirectionsMapProps */) {
-    return (
-        <>
-            <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-                <Map disableDefaultUI={true} mapId="afbad091e24bf165" className="w-full h-[200px]">
-                    <RenderRoute />
-                </Map>
-            </APIProvider>
-
-        </>
-    )
-}
-
-/*
- 
-<iframe
-hidden={loading}
-onLoad={() => setLoading(false)}
-width="100%"
-height="200"
-className="rounded-lg"
-src={"https://www.google.com/maps/embed/v1/directions?key=" +
-    import.meta.env.VITE_GOOGLE_MAPS_API_KEY +
-    "&origin=" + origin + "&destination=" + destination}
-/>
-*/

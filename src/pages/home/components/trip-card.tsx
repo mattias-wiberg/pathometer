@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ChevronDown, ChevronUp, MoveRight } from 'lucide-react'
 import { useState } from 'react'
-import DirectionsMap from './directions-map'
 import RouteMap from './route-map'
+import { Map } from '@vis.gl/react-google-maps'
+import exampleDirections from '@/assets/exmaple-route.json'
 
 type TripCardProps = {
     from: string
@@ -37,7 +38,11 @@ function TripCard({ from, to, distance }: TripCardProps) {
             </CardHeader>
             <CardContent>
                 {
-                    expanded && <RouteMap origin='Gothenburg+Sweden' destination='Stockholm+Sweden' />
+                    expanded && (
+                        <Map disableDefaultUI={true} className="w-full h-[200px]">
+                            <RouteMap directions={exampleDirections as unknown as google.maps.DirectionsResult} routeIndex={0} />
+                        </Map>
+                    )
                 }
             </CardContent>
         </Card>

@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/home/home.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
 import Auth from './pages/auth.tsx'
+import { APIProvider } from '@vis.gl/react-google-maps'
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider defaultTheme='system' storageKey='vite-ui-theme'>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+          <RouterProvider router={router} />
+        </APIProvider>
       </AuthProvider>
     </ThemeProvider>
   </React.StrictMode>,
