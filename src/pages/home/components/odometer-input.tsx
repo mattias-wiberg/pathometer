@@ -3,13 +3,13 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTriggerSimple, Se
 import { Minus, Plus } from 'lucide-react'
 import { useState } from 'react';
 
-function OdometerInput() {
+export function OdometerInput() {
     const vehiclesODO = {
         "CBA321": 1240,
         "ABC123": 2000
     }
     const [odometer, setOdometer] = useState(0);
-    const [plate, setPlate] = useState<String | null>(null)
+    const [plate, setPlate] = useState<string | null>(null)
 
     const setVehicle = (value: string) => {
         setPlate(value)
@@ -111,5 +111,3 @@ function OdometerInput() {
         </div>
     )
 }
-
-export default OdometerInput
