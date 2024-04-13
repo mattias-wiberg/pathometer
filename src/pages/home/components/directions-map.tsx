@@ -1,15 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import { useEffect, useState } from 'react'
+import { Trip } from '../types/Trip';
 
-type DirectionsMapProps = {
-    origin: string
-    destination: string
-}
 
-function DirectionsMap({ origin, destination }: DirectionsMapProps) {
+function DirectionsMap({ trip }: { trip: Trip | undefined }) {
     const [routeIndex, setRouteIndex] = useState(0);
     const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
+
+    if (!trip) return null;
 
     return (
         <>
@@ -30,20 +29,19 @@ function DirectionsMap({ origin, destination }: DirectionsMapProps) {
                 ))}
             </div>
             <Map disableDefaultUI={true} className="w-full h-[200px]">
-                <Directions origin={origin} destination={destination} setRoutes={setRoutes} routeIndex={routeIndex} />
+                <Directions trip={trip} setRoutes={setRoutes} routeIndex={routeIndex} />
             </Map>
         </>
     )
 }
 
 type DirectionsProps = {
-    origin: string
-    destination: string
+    trip: Trip
     setRoutes: (routes: google.maps.DirectionsRoute[]) => void
     routeIndex: number
 }
 
-function Directions({ origin, destination, setRoutes, routeIndex }: DirectionsProps) {
+function Directions({ trip: { origin, destination }, setRoutes, routeIndex }: DirectionsProps) {
     const map = useMap();
     const routesLibrary = useMapsLibrary('routes');
     const [directionsService, setDirectionsService] =
@@ -66,8 +64,8 @@ function Directions({ origin, destination, setRoutes, routeIndex }: DirectionsPr
 
         directionsService
             .route({
-                origin: origin,
-                destination: destination,
+                origin: origin || 'Berlin',
+                destination: destination || 'Hamburg',
                 travelMode: google.maps.TravelMode.DRIVING,
                 provideRouteAlternatives: true
             })
@@ -77,7 +75,7 @@ function Directions({ origin, destination, setRoutes, routeIndex }: DirectionsPr
             });
 
         return () => directionsRenderer.setMap(null);
-    }, [directionsService, directionsRenderer]);
+    }, [directionsService, directionsRenderer, setRoutes, origin, destination]);
 
     // Update direction route
     useEffect(() => {

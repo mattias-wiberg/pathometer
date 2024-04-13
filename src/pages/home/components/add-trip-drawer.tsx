@@ -1,30 +1,45 @@
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
-import PlacesInput from './places-input';
+
 import OdometerInput from './odometer-input';
 import { Plus } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import DirectionsMap from './directions-map';
+import TripForm from './trip-form';
+import { Trip } from '../types/Trip';
 
 function AddTripDrawer() {
     const [step, setStep] = useState(0)
-    const steps: Map<number, { title: string, description: string, element: JSX.Element }> = new Map([
-        [0, {
-            title: "Current Odometer",
-            description: "Set your starting odometer value.",
-            element: <OdometerInput />
-        }],
-        [1, {
-            title: "Add trip",
-            description: "Enter the trip details",
-            element: <PlacesInput />
-        }],
-        [2, {
-            title: "Pick route",
-            description: "This is the route the distance and time will be calculated from.",
-            element: <DirectionsMap origin='Gothenburg, Sweden' destination='Stockholm, Sweden' />
-        }],
-    ])
+    const [trip, setTrip] = useState<Trip>()
+    const steps: Map<number,
+        {
+            title: string,
+            description: string,
+            disabled: boolean,
+            element: JSX.Element
+        }> = useMemo(() => {
+            return new Map([
+                [0, {
+                    title: "Current Odometer",
+                    description: "Set your starting odometer value.",
+                    disabled: false,
+                    element: <OdometerInput />
+                }],
+                [1, {
+                    title: "Add trip",
+                    description: "Enter where the trip is from and to",
+                    disabled: trip === undefined || trip.origin === undefined || trip.destination === undefined,
+                    element: <TripForm setTrip={setTrip} />,
+                }],
+                [2, {
+                    title: "Pick route",
+                    description: "This is the route the distance and time will be calculated from.",
+                    disabled: false,
+                    element: <DirectionsMap trip={trip} />,
+                }],
+            ])
+        }, [trip]
+        )
 
     const nextStep = () => {
         setStep((prev) => prev + 1)
@@ -41,23 +56,22 @@ function AddTripDrawer() {
             </DrawerTrigger>
             <DrawerContent>
                 <div className="mx-auto w-full max-w-md">
-                    <DrawerHeader>
+                    <DrawerHeader className='px-0'>
                         <DrawerTitle>{steps.get(step)?.title}</DrawerTitle>
                         <DrawerDescription>{steps.get(step)?.description}</DrawerDescription>
                     </DrawerHeader>
                     {steps.get(step)?.element}
-                    <DrawerFooter>
+                    <DrawerFooter className='px-0'>
                         {
                             step === steps.size - 1 ?
                                 <DrawerClose asChild>
                                     <Button>Add trip</Button>
                                 </DrawerClose>
                                 :
-                                <Button onClick={nextStep}>Next</Button>
+                                <Button onClick={nextStep} disabled={steps.get(step)?.disabled}>Next</Button>
                         }
                         {
                             step > 0 ? <Button variant="outline" onClick={prevStep}>Previous</Button> :
-
                                 <DrawerClose asChild>
                                     <Button variant="outline">Cancel</Button>
                                 </DrawerClose>

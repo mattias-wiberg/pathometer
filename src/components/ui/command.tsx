@@ -1,7 +1,7 @@
 import * as React from "react"
 import { type DialogProps } from "@radix-ui/react-dialog"
 import { Command as CommandPrimitive } from "cmdk"
-import { Search } from "lucide-react"
+import { ArrowDownToDot, ArrowUpFromDot, Search } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
@@ -21,7 +21,7 @@ const Command = React.forwardRef<
 ))
 Command.displayName = CommandPrimitive.displayName
 
-interface CommandDialogProps extends DialogProps {}
+interface CommandDialogProps extends DialogProps { }
 
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
@@ -35,22 +35,41 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   )
 }
 
+export type CommandInputIcon = "search" | "arrow-up-from-dot" | "arrow-down-to-dot"
+
+interface CommandInputProps extends React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> {
+  loading?: boolean
+  icon: CommandInputIcon
+}
+
 const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => (
-  <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
-    <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+  CommandInputProps
+>(({ className, loading, icon, ...props }, ref) => {
+  const iconClass = "w-4 h-4 text-muted-foreground mr-2"
+  return (<div className="flex items-center px-3" cmdk-input-wrapper="">
+    {icon === "search" && <Search className={iconClass} />}
+    {icon === "arrow-up-from-dot" && <ArrowUpFromDot className={iconClass} />}
+    {icon === "arrow-down-to-dot" && <ArrowDownToDot className={iconClass} />}
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
-        "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground",
         className
       )}
       {...props}
     />
+    {
+      loading && (
+        <span className="relative flex h-3 w-3">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+        </span>
+      )
+    }
   </div>
-))
+  )
+})
 
 CommandInput.displayName = CommandPrimitive.Input.displayName
 
@@ -60,7 +79,7 @@ const CommandList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.List
     ref={ref}
-    className={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
+    className={cn("max-h-[300px] overflow-x-hidden overflow-y-hidden", className)}
     {...props}
   />
 ))
@@ -115,7 +134,7 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-pointer select-none items-center rounded-sm last:mb-2 mx-2 px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground",
       className
     )}
     {...props}
