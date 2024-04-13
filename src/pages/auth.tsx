@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { FaGoogle, FaSpinner } from 'react-icons/fa'
 import { NavLink, useNavigate } from 'react-router-dom'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Label } from '@radix-ui/react-dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -48,6 +48,12 @@ function Auth() {
             setIsLoading(false)
         }, 3000)
     }
+
+    useEffect(() => {
+        if (auth.currentUser) {
+            navigate('/')
+        }
+    }, [auth, navigate])
 
     return (
         <>
