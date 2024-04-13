@@ -1,4 +1,4 @@
-import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
+import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import { useEffect, useState } from 'react'
 
 type DirectionsMapProps = {
@@ -25,7 +25,7 @@ export default function RouteMap({ directions, routeIndex }: DirectionsMapProps)
             suppressInfoWindows: true,
         }));
         return () => directionsRenderer?.setMap(null);
-    }, [routesLibrary, map]);
+    }, [routesLibrary, map, directions, routeIndex, directionsRenderer]);
 
     return null;
 }

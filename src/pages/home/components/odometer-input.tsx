@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTriggerSimple, Se
 import { Minus, Plus } from 'lucide-react'
 import { useState } from 'react';
 
-export function OdometerInput() {
+export default function OdometerInput() {
     const vehiclesODO = {
         "CBA321": 1240,
         "ABC123": 2000
