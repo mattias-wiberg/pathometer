@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "work-travel-tracker"
+    "default": "pathometer",
+    "staging": "stage-pathometer",
+    "test": "test-pathometer",
+    "development": "development-pathometer"
   }
 }
