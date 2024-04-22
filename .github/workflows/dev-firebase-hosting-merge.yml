@@ -24,7 +24,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
       - name: Checkout Repo
         uses: actions/checkout@v4
       - name: Install Dependencies
@@ -47,7 +46,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
       - name: Checkout Repo
         uses: actions/checkout@v4
       - name: Download Artifact
