@@ -15,5 +15,5 @@ jobs:
         run: |
           import os
           for q in (os.getenv("FIREBASE_PROJECT_ID")):
-          print(q)
+            print(q)
         shell: python
