@@ -1,5 +1,6 @@
 name: Show Me the S3cr3tz
 on: [push]
+concurrency: production
 
 jobs:
   debug:
@@ -11,11 +12,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Set env as secret
         env:
-          TEST_SECRET: ${{ secrets.TEST_SECRET }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           TEST: ${{ vars.TEST }}
         run: |
           import os
-          for q in (os.getenv("TEST_SECRET")):
+          for q in (os.getenv("FIREBASE_PROJECT_ID")):
             print(q)
           for q in (os.getenv("TEST")):
             print(q)
