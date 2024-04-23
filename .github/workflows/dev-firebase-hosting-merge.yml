@@ -20,10 +20,6 @@ jobs:
       FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
       FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
     steps:
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
       - name: Checkout Repo
         uses: actions/checkout@v4
       - name: Install Dependencies
@@ -41,10 +37,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
       - name: Checkout Repo
         uses: actions/checkout@v4
       - name: Download Artifact
